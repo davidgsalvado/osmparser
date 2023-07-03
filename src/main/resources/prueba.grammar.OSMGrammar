@@ -1,0 +1,61 @@
+CONNECT TO DBASE=osmparser OF TYPEDB=PostgreSQL FROM PORTDB=5432 OF HOSTDB=localhost WITH USERDB=david AND PASSWORDDB=password
+
+SELECT node, way {
+name:es, name, "sin nombre" => name,
+type => type,
+toString(amenity) => typeAmenity,
+geom => Geometry
+} FROM ((amenity="hospital" AND name="chuac") OR amenity="clinic") TO CentroDeSalud WHERE BBOX=(43.3709703,-8.3959425)
+
+SELECT node, way {
+name:es, "sin nombre" => name,
+type, name => type,
+toString(amenity) => typeAmenity,
+toPoint(geom) => Geometry
+} FROM ((amenity="hospital" AND name="chuac") OR (amenity="tourism" AND addr:city="A Coruña")) TO CentroDeSalud WHERE BBOX=(43.3709703,-8.3959425)
+
+SELECT way {
+name:es, name:gl => name,
+type, operator:type, toString(operator:type) => type,
+toString(emergency) => tieneUrgencias
+} FROM (amenity="clinic") to Hospital WHERE BBOX=(43.3709703,-8.3959425,134.3123901,-23.4710345)
+
+SELECT node, way {
+description, "sin descripción"=> description,
+building_levels => levels,
+addr:city => city,
+addr:street => street,
+website => web,
+toBoolean(wheelchair) => hasWheelchair
+} FROM (tourism="museum") to Museum WHERE BBOX=(132.1093561, -91.3920381)
+
+SELECT node {
+geom => Geometry,
+name:es, name:gl, "sin nombre" => name,
+toString(emergency) => hasEmergency
+} FROM (amenity="hospital" OR amenity="clinic" OR amenity="healthCenter") TO CentroDeSalud WHERE BBOX=(43.3709703,-8.3959425)
+
+SELECT node {
+geom => Geometry,
+name:es, name:gl => name,
+website, "sin web" => web
+} FROM (amenity is not null) to Restaurant WHERE BBOX=(43.3709703,-8.3959425)
+
+
+SELECT node, way {
+geom => Geometry,
+name:es, name:gl, name:fr => name,
+amenity => amenity
+} FROM (amenity) To AmenityEntity WHERE BBOX=(43.3709703,-8.3959425)
+
+SELECT node {
+geom => Geometry,
+name:es, name:gl => name,
+website, "sin web" => web
+} FROM (amenity is not null AND name is not null) to Restaurant WHERE BBOX=(43.3709703,-8.3959425)
+
+SELECT node {
+geom => Geometry,
+name:es, name:gl => name,
+website, "sin web" => web
+} FROM ((amenity="hospital" AND name is not null) OR amenity="clinic") to CentroDeSalud WHERE BBOX=(43.3709703,-8.3959425)

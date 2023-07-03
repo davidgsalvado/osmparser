@@ -1,0 +1,32 @@
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+spring:
+  datasource:
+    url: @dataSource.url@
+    username: @dataSource.user@
+    password: @dataSource.password@
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 10
+      maximum-pool-size: 10
+      idle-timeout: 10000
+      max-lifetime: 1000
+      auto-commit: true
+  devtools:
+    restart:
+      trigger-file: reload
+    livereload:
+      enabled: false
+  jackson:
+    default-property-inclusion: NON_NULL
+  jpa:
+    hibernate:
+      ddl-auto: none
+      show-sql: true
+      format-sql: true
+      use-sql-comments: true
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

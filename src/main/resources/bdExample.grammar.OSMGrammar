@@ -1,0 +1,35 @@
+CONNECT TO DBASE=osmparser OF TYPEDB=PostgreSQL FROM PORTDB=5432 OF HOSTDB=localhost WITH USERDB=david AND PASSWORDDB=password
+
+SELECT node, way {
+    name:es, name => name,
+    addr:city, "Santiago de Compostela" => city,
+    addr:street => street,
+    ST_CENTROID(geom) => location
+}
+FROM (amenity=hospital OR amenity=clinic) TO Hospital
+WHERE BBOX=(42.84866, -8.59242, 42.88672, -8.50325)
+
+SELECT way {
+    name, "Nombre" => name,
+    website => web,
+    addr:street => street,
+    addr:city => city,
+    toBoolean(smoking) => smoke,
+    ST_CENTROID(geom) => location
+}
+FROM (amenity="bar") TO Cafeteria
+WHERE BBOX=(42.84866, -8.59242, 42.88672, -8.50325)
+
+SELECT node {
+    name:es, name, "Nombre" => name,
+    rooms => numberRooms,
+    stars => numberStars,
+    website => web,
+    addr:city => city,
+    addr:street => street,
+    phone => telephone,
+    toBoolean(pets_allowed) => petsAllowed,
+    ST_CENTROID(geom) => location
+}
+FROM (tourism="hotel") TO Hotel
+WHERE BBOX=(42.84866, -8.59242, 42.88672, -8.50325)
